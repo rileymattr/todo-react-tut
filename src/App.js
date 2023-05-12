@@ -13,6 +13,10 @@ const FILTER_MAP = {
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function App(props) {
+  function setTaskListCookies(taskList) {
+    localStorage.set("tasks", taskList);
+  }
+
   function addTask(name) {
     const newTask = {id: `task-${nanoid()}`, name, completed: false};
     setTasks([...tasks, newTask]);
