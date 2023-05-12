@@ -13,13 +13,19 @@ const FILTER_MAP = {
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function App(props) {
-  function setTaskListCookies(taskList) {
-    localStorage.set("tasks", taskList);
+  const [tasks, setTasks] = useState(props.tasks);
+  const [filter, setFilter] = useState("All");
+
+  function updateTaskListCookie(tasks) {
+    localStorage.removeItem("tasks")
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    console.log(tasks);
   }
 
   function addTask(name) {
     const newTask = {id: `task-${nanoid()}`, name, completed: false};
     setTasks([...tasks, newTask]);
+    updateTaskListCookie(tasks);
   }
 
   function toggleTaskCompleted(id) {
@@ -49,9 +55,6 @@ function App(props) {
     setTasks(updatedTasks);
   }
   
-  const [tasks, setTasks] = useState(props.tasks);
-  const [filter, setFilter] = useState("All");
-
   const filterList = FILTER_NAMES.map((name) =>
     <FilterButton 
       key={name} 
