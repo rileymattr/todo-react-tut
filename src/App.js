@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { nanoid } from "nanoid";
 import Todo from "./components/Todo";
 import Form from "./components/Form";
@@ -16,16 +16,16 @@ function App(props) {
   const [tasks, setTasks] = useState(props.tasks);
   const [filter, setFilter] = useState("All");
 
-  function updateTaskListCookie(tasks) {
-    localStorage.removeItem("tasks")
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    console.log(tasks);
-  }
+  useEffect(
+    function updateTaskListCookie() {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    },
+    [tasks]
+  )
 
   function addTask(name) {
     const newTask = {id: `task-${nanoid()}`, name, completed: false};
     setTasks([...tasks, newTask]);
-    updateTaskListCookie(tasks);
   }
 
   function toggleTaskCompleted(id) {
