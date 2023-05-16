@@ -15,17 +15,15 @@ const FILTER_NAMES = Object.keys(FILTER_MAP);
 function App(props) {
   const [tasks, setTasks] = useState(props.tasks);
   const [filter, setFilter] = useState("All");
-
-  useEffect(
-    function updateTaskListCookie() {
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-    },
-    [tasks]
-  )
+  
+  useEffect(() => {
+    setTasks(JSON.parse(localStorage.getItem("tasks")));
+  }, []);
 
   function addTask(name) {
-    const newTask = {id: `task-${nanoid()}`, name, completed: false};
-    setTasks([...tasks, newTask]);
+    const updatedTasks = [...tasks, {id: `task-${nanoid()}`, name, completed: false}];
+    setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
   }
 
   function toggleTaskCompleted(id) {
@@ -36,6 +34,7 @@ function App(props) {
       return task;
     });
     setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
   }
 
   function deleteTask(id) {
@@ -43,6 +42,7 @@ function App(props) {
       id !== task.id
     );
     setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
   }
 
   function editTask(id, newName) {
@@ -53,6 +53,7 @@ function App(props) {
       return task;
     });
     setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
   }
   
   const filterList = FILTER_NAMES.map((name) =>
